@@ -39,6 +39,20 @@ void main() {
           expect(token?.length, greaterThan(24));
         });
 
+        test('should return a token after signOut() & signIn()', () async {
+          // Demonstrate fix for this issue works: https://github.com/firebase/flutterfire/issues/11297
+          String email = generateRandomEmail();
+
+          final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email,
+            password: testPassword,
+          );
+
+          String? token = await userCredential.user!.getIdToken(true);
+
+          expect(token?.length, greaterThan(24));
+        });
+
         test('should catch error', () async {
           // Setup
           late User user;
